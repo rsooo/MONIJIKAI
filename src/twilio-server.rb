@@ -22,8 +22,9 @@ get '/shop_answer' do
   logger.info("shop_answer")
   logger.info(params)
   ANSWER_DIGITS = params["Digits"]
+  logger.info(ANSWER_DIGITS)
   response = Twilio::TwiML::VoiceResponse.new do |r|
-    if ANSWER_DIGITS = "1"
+    if ANSWER_DIGITS == "1"
       r.say("予約させていただきました", voice: 'woman', language: "ja-JP")
     else
       r.say("予約できないとのことで、了解いたしました。", voice: 'woman', language: "ja-JP")
