@@ -113,6 +113,7 @@ get '/phonecall' do
     :to =>   "#{ENV["CALL_TO"]}",     # To any number
     :url => "http://153.127.195.16:4567/first-confirm-wav?phonefrom=#{phonefrom}&timestamp=#{timestamp}&phonedest=#{phonedest}"
   )
+  response.headers["Access-Control-Allow-Origin"] = '*'
   "Request was accepted."
 end
 
