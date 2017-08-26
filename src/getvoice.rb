@@ -33,16 +33,26 @@ end
 
 get '/create_wav_file' do 
 
+	#リクエストパラメータから値を取得。
 	name = params["name"].gsub!("\""," ")
-	number = params["number"].gsub!("\""," ")
+	number = params["personcount"].gsub!("\""," ")
 	ragtime = params["ragtime"].gsub!("\""," ")
-	phone = params["phone"].gsub!("\""," ")
+	phone = params["phonedest"].gsub!("\""," ")
+
+	#p電話番号が聞き取りにくいため間に,を入れる
+	tmp = phone
+	tmp.split("")
+	phone_for_voice = ("")
+
+	11.times { |i|
+		phone_for_voice=phone_for_voice + tmp[i] + "、"
+	}
 
 	templates = [ 
 		"予約システムから失礼いたします。#{name}と申します。席の予約をお願いできないでしょうか？",
 		"時間は、本日#{ragtime}分後、人数は、#{number}名で、席だけの予約は可能でしょうか？",
 		"予約可能な場合は、再度氏名と電話番号を申し上げますので、1を。予約不可能な場合は、2を。もう一度内容をお聞きになる場合は0を押してください。",
-		"氏名は、#{name}と申します。電話番号は、#{phone}です。",
+		"氏名は、#{name}と申します。電話番号は、#{phone_for_voice}です。",
 		"予約受付完了の場合は1を。再度情報をお聞きになる場合は2を押してください。",
 		"予約は不可とのことで承知いたしました。ご対応いただき誠にありがとうございました。"
 	]
