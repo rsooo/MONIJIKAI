@@ -3,8 +3,10 @@ require 'json'
 require 'base64'
 require 'rubygems'
 require 'sinatra'
-
+require 'logger'
 def get_voice_file(text,textnum,name,phone)
+
+	log = Logger.new('/tmp/log')
 
 	uri = URI("http://rospeex.nict.go.jp/nauth_json/jsServices/VoiceTraSS")
 
@@ -24,6 +26,8 @@ def get_voice_file(text,textnum,name,phone)
 
 	json_data=JSON.parse(res.body)
 
+	log.info("#{phone}_")
+
 	filename = "#{phone}_#{textnum}.wav"
 	
 	File.open("#{output_dir}/#{filename}", "w") do |f| 
@@ -34,10 +38,17 @@ end
 get '/create_wav_file' do 
 
 	#リクエストパラメータから値を取得。
-	name = params["name"].gsub!("\""," ")
-	number = params["personcount"].gsub!("\""," ")
-	ragtime = params["ragtime"].gsub!("\""," ")
-	phone = params["phonefrom"].gsub!("\""," ")
+	name = params["name"].gsub!("\"","")
+	number = params["personcount"].gsub!("\"","")
+	ragtime = params["ragtime"].gsub!("\"","")
+	phone = params["phonefrom"].gsub!("\"","")
+
+	log = Logger.new('/tmp/clog')
+	log.info("_#{name}_")
+	log.info("_#{number}_")
+	log.info("_#{ragtime}_")
+	log.info("_#{phone}_")
+	
 
 	#p電話番号が聞き取りにくいため間に,を入れる
 	tmp = phone
@@ -60,5 +71,6 @@ get '/create_wav_file' do
 	templates.each_with_index do |item,i|
 		get_voice_file(item,i,name,phone)
 	end
+	response.headers["Access-Control-Allow-Origin"] = '*'
 	'OK'
 end
