@@ -26,6 +26,17 @@ post '/first-confirm' do
   response
 end
 
+post '/first-confirm-test' do
+  PERSON_COUNT = params["person_count"]
+  START_TIME = params["start_time"]
+  response = Twilio::TwiML::VoiceResponse.new do |r|
+    r.say("我々はtwilioを用いて二次会の予約をするシステムを作っています。", voice: 'woman', language: "ja-JP")
+    r.say("このようにtwilioで自動生成される音声は微妙です。", voice: 'woman', language: "ja-JP")
+  end.to_s
+  logger.info(response)
+  response
+end
+
 post '/first-confirm-wav' do
   PHONEFROM = params["phonefrom"]
   PHONEDEST = params["phonedest"]
@@ -81,20 +92,44 @@ get '/shop_answer' do
   end.to_s
 end
 
-get '/callback-answer' do
-  logger.info("testaaa") 
-  logger.info(params)
-  logger.info("test") 
-  PUSH_KEY = params["Digits"]
-  response = Twilio::TwiML::VoiceResponse.new do |r|
-    r.say("あなたの押したキーは #{PUSH_KEY} ですね", voice: 'woman', language: "ja-JP")
-  end.to_s
-  logger.info(response)
-  response
+#####
+## 電話着信
+#####
+
+get '/phonecall' do
+  account_sid = ENV["ACCOUNT_SID"]
+  auth_token  = ENV["AUTH_TOKEN"]
+
+  phonefrom = params["phonefrom"]
+  phonedest = params["phonedest"]
+  timestamp = params["timestamp"]
+
+  logger.info(account_sid)
+  logger.info(auth_token)
+  @client = Twilio::REST::Client.new account_sid, auth_token 
+
+  @call = @client.calls.create(
+    :from => "#{ENV["CALL_FROM"]}",   # From your Twilio number
+    :to =>   "#{ENV["CALL_TO"]}",     # To any number
+    :url => "http://153.127.195.16:4567/first-confirm-wav?phonefrom=#{phonefrom}&timestamp=#{timestamp}&phonedest=#{phonedest}"
+  )
+  "Request was accepted."
 end
 
-get '/hello-monkey' do
-  Twilio::TwiML::VoiceResponse.new do |r|
-    r.say("Hello もとださん 二次会アプリケーション頑張って作りましょう", voice: 'woman', language: "ja-JP")
-  end.to_s
-end
+#get '/callback-answer' do
+#  logger.info("testaaa") 
+#  logger.info(params)
+#  logger.info("test") 
+#  PUSH_KEY = params["Digits"]
+#  response = Twilio::TwiML::VoiceResponse.new do |r|
+#    r.say("あなたの押したキーは #{PUSH_KEY} ですね", voice: 'woman', language: "ja-JP")
+#  end.to_s
+#  logger.info(response)
+#  response
+#end
+
+#get '/hello-monkey' do
+#  Twilio::TwiML::VoiceResponse.new do |r|
+#    r.say("Hello もとださん 二次会アプリケーション頑張って作りましょう", voice: 'woman', language: "ja-JP")
+#  end.to_s
+#end

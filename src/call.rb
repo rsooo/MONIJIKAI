@@ -18,7 +18,8 @@ timestamp = "_"
   #:url => 'http://153.127.195.16/call.xml'
   #:url => 'http://153.127.195.16:4567/first-confirm?person_count=5&start_time=20'
   #:url => "http://153.127.195.16:4567/first-confirm-wav?phone=#{phone_number}&timestamp=#{timestamp}"
-  :url => "http://153.127.195.16:4567/first-confirm-wav?phonefrom=#{phonefrom}&timestamp=#{timestamp}&phonedest=#{phonedest}"
+  #:url => "http://153.127.195.16:4567/first-confirm-wav?phonefrom=#{phonefrom}&timestamp=#{timestamp}&phonedest=#{phonedest}"
+  :url => "http://153.127.195.16:4567/first-confirm?phonefrom=#{phonefrom}&timestamp=#{timestamp}&phonedest=#{phonedest}"
 )
 
 

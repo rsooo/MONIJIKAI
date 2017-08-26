@@ -37,7 +37,7 @@ get '/create_wav_file' do
 	name = params["name"].gsub!("\""," ")
 	number = params["personcount"].gsub!("\""," ")
 	ragtime = params["ragtime"].gsub!("\""," ")
-	phone = params["phonedest"].gsub!("\""," ")
+	phone = params["phonefrom"].gsub!("\""," ")
 
 	#p電話番号が聞き取りにくいため間に,を入れる
 	tmp = phone
