@@ -54,8 +54,8 @@ get '/create_wav_file' do
 	tmp = phone
 	tmp.split("")
 	phone_for_voice = ("")
-
-	11.times { |i|
+	
+	phone.length.times { |i|
 		phone_for_voice=phone_for_voice + tmp[i] + "、"
 	}
 
@@ -64,7 +64,7 @@ get '/create_wav_file' do
 		"時間は、本日#{ragtime}分後、人数は、#{number}名で、席だけの予約は可能でしょうか？",
 		"予約可能な場合は、再度氏名と電話番号を申し上げますので、1を。予約不可能な場合は、2を。もう一度内容をお聞きになる場合は0を押してください。",
 		"氏名は、#{name}と申します。電話番号は、#{phone_for_voice}です。",
-		"予約受付完了の場合は1を。再度情報をお聞きになる場合は2を押してください。",
+		"ご対応ありがとうございました。",
 		"予約は不可とのことで承知いたしました。ご対応いただき誠にありがとうございました。"
 	]
 
